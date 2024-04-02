@@ -6,7 +6,6 @@ import Image from "../Atoms/Image";
 import DummyHouse from "../../Assets/dummy_house2.png";
 import Text from "../Atoms/Text";
 import { useTranslation } from "react-i18next";
-import { device } from "../Atoms/Devices";
 
 const CardContainer = styled.button`
   margin-top: 20px;
@@ -41,7 +40,7 @@ const ObjectCard = ({ data,onclick }) => {
             height="110px"
             src={imgUrl}
             alt="Vorschau"
-          ></Image>
+          />
         </Column>
         <Column
           width="75%"

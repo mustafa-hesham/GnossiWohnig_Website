@@ -140,7 +140,7 @@ const Settings = (props) => {
 
   return (
     <>
-      {modalIsOpen == true && (
+      {modalIsOpen === true && (
         <div ref={node}>
           <Row justify="center" isRow={true} isRowOnMobile={true}>
             {t("Auth.CancelSubscriptionModalDescription")}
@@ -163,7 +163,7 @@ const Settings = (props) => {
           </Container>
         </div>
       )}
-      {modalIsOpen == false && (
+      {modalIsOpen === false && (
         <>
           <Text size="14px" weight="bold" marginBottom="8px">
             {t("Auth.LoggedInAs")}

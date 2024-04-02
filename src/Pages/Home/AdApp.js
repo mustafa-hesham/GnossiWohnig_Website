@@ -60,12 +60,14 @@ const AdApp = () => {
           <Row justify="center" isRow={true} isRowOnMobile={true}>
             <IconLinkButton
               aria-label="App Store"
-              link=""
+              link="#"
+              alt="App Store"
               icon={LogoAppStore}
             />
             <IconLinkButton
               aria-label="Play Store"
               link="https://play.google.com/store/apps/details?id=com.nelinik.gnossi_wohnig"
+              alt="Play Store"
               icon={LogoPlayStore}
             />
           </Row>

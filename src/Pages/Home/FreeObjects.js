@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { device } from "../../Components/Atoms/Devices";
@@ -59,13 +59,14 @@ const FreeObjects = () => {
     return React.useMemo(() => new URLSearchParams(search), [search]);
   }
   let query = useQuery();
+  const queryId = query.get("id");
   const { t } = useTranslation();
-  const [objectsInView, setObjectsInView] = useState(null);
+  const [objectsInView, setObjectsInView] = useState([]);
   const [switchChecked, setSwitchChecked] = useState(false);
-  const [freeObjects, setFreeObjects] = useState(null);
-  const [addSnapshots, setAddSnapshots] = useState(null);
-  const [modSnapshots, setModSnapshots] = useState(null);
-  const [delSnapshots, setDelSnapshots] = useState(null);
+  const [freeObjects, setFreeObjects] = useState([]);
+  const [addSnapshots, setAddSnapshots] = useState([]);
+  const [modSnapshots, setModSnapshots] = useState([]);
+  const [delSnapshots, setDelSnapshots] = useState([]);
   const [proUser, setProUser] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { isSignedIn, user } = useAuth();
@@ -77,10 +78,17 @@ const FreeObjects = () => {
     });
   }
 
+  const updateUserSubscription = useCallback(() => (subscription) => {
+    if (user && user?.uid && subscription) {
+      setSubscription(user?.uid, true, subscription);
+    }
+  }, [user]);
+
   useEffect(() => {
-    if (query.get("id") && isSignedIn) {
+
+    if (queryId && isSignedIn) {
       callCloudFunctionWithAppCheck("getpaymentDetails", {
-        sessionId: query.get("id"),
+        sessionId: queryId,
       })
         .then((response) => {
           if (response?.data?.subscription) {
@@ -93,7 +101,7 @@ const FreeObjects = () => {
 
       callCloudFunctionWithAppCheck("sendStripeTokens", {
         app_user_id: user.uid,
-        fetch_token: query.get("id"),
+        fetch_token: queryId,
       })
         .then((response) => {
           setProUserStatus(user.uid, true);
@@ -103,13 +111,7 @@ const FreeObjects = () => {
           console.log("sendStripeToken failed:", error);
         });
     }
-  }, [query.get("id"), isSignedIn]);
-
-  const updateUserSubscription = (subscription) => {
-    if (user && user?.uid && subscription) {
-      setSubscription(user?.uid, true, subscription);
-    }
-  };
+  }, [queryId, isSignedIn, query, updateUserSubscription, user?.uid]);
 
   const sortObjects = (obj) => {
     var res = null;
@@ -133,16 +135,16 @@ const FreeObjects = () => {
   }, []);
 
   useEffect(() => {
-    if (freeObjects === null) {
+    if (!freeObjects) {
       const sortedAddSnap = sortObjects(addSnapshots);
       setFreeObjects(sortedAddSnap);
       setObjectsInView(sortedAddSnap);
-    } else {
-      addSnapshots.forEach((obj) => {
-        setFreeObjects([obj, ...freeObjects]);
-      });
+    } else if (!addSnapshots.every(x => freeObjects.includes(x))) {
+      const combinedArray = Array.from(new Set([...addSnapshots, ...freeObjects]));
+      setFreeObjects(combinedArray);
+      setObjectsInView(combinedArray);
     }
-  }, [addSnapshots]);
+  }, [addSnapshots, freeObjects]);
 
   useEffect(() => {
     if (modSnapshots) {
@@ -161,7 +163,7 @@ const FreeObjects = () => {
         }
       });
     }
-  }, [modSnapshots]);
+  }, [modSnapshots, freeObjects]);
 
   useEffect(() => {
     if (delSnapshots) {
@@ -181,7 +183,7 @@ const FreeObjects = () => {
         }
       });
     }
-  }, [delSnapshots]);
+  }, [delSnapshots, freeObjects]);
 
   useEffect(() => {
     if (switchChecked) {
@@ -235,15 +237,8 @@ const FreeObjects = () => {
               <SwitchButton
                 onChange={filterZHObjects}
                 checked={switchChecked}
+                label={t("Home.OnlyZHCity")}
               />
-              <Text
-                size="14px"
-                display="inline"
-                marginLeft="10px"
-                lineHeight="1.5"
-              >
-                {t("Home.OnlyZHCity")}
-              </Text>
             </Column>
           </Row>
           {objectsInView ? (

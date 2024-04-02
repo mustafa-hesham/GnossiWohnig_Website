@@ -12,7 +12,7 @@ import Footer from "./Footer/Footer";
 
 const theme = {
   colors: {
-    primary: "#4287a1",
+    primary: "#2e5e70",
     secundary: "#eff0f4",
     third: "#c6dbe3",
     navFontColor: "#d9dadb",

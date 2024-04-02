@@ -13,6 +13,8 @@ const Icon = styled.img`
   margin: 0px 10px;
   box-shadow: 0px 0px 7px 2px rgba(135, 135, 135, 0.3);
   border-radius: 5px;
+  width: auto;
+  height: auto;
 
   @media ${device.mobile} {
     height: 30px;
@@ -50,10 +52,10 @@ export const ButtonWithRoundIcon = styled.button`
   padding: 0px;
 `;
 
-export const IconLinkButton = ({ link, icon }) => {
+export const IconLinkButton = ({ link, icon, alt }) => {
   return (
-    <Link href={link}>
-      <Icon src={icon} />
+    <Link href={link} >
+      <Icon src={icon} alt= { alt } />
     </Link>
   );
 };
