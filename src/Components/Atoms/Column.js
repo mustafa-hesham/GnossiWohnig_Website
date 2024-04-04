@@ -8,6 +8,7 @@ const Column = styled.div`
   margin-left: ${(props) => props.marginLeft || "0px"};
   margin-right: ${(props) => props.marginRight || "0px"};
   text-align: ${(props) => props.textAlign || "left"};
+  overflow: ${(props) => props.overflow || "visible"};
 
   @media ${device.tablet} {
     width: ${(props) => props.widthTablet || "90%"};

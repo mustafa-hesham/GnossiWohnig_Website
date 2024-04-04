@@ -9,7 +9,7 @@ import { CustomList } from "../../Components/Molecules/List";
 import { IconLinkButton } from "../../Components/Atoms/Button";
 import LogoAppStore from "../../Assets/logo_app_store.png";
 import LogoPlayStore from "../../Assets/logo_play_store.png";
-import AppLogo from "../../Assets/app_logo.png";
+import AppLogo from "../../Assets/app_logo.svg";
 import Background from "../../Components/Atoms/Background";
 import styled, { useTheme } from "styled-components";
 

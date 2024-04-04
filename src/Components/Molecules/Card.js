@@ -3,7 +3,7 @@ import styled, { useTheme } from "styled-components";
 import Row from "../Atoms/Row";
 import Column from "../Atoms/Column";
 import Image from "../Atoms/Image";
-import DummyHouse from "../../Assets/dummy_house2.png";
+import DummyHouse from "../../Assets/dummy_house2.svg";
 import Text from "../Atoms/Text";
 import { useTranslation } from "react-i18next";
 
